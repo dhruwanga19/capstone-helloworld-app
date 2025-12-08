@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Installing dependencies...
+
+  pre_build:
+    commands:
+      - echo Pre-build phase...
+      - mvn --version
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn clean package
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+      - echo Uploading artifact to S3...
+      - aws s3 cp target/helloworld.war s3://capstone-project-dhruwang-artifacts-rcmha9ft/helloworld-${TIMESTAMP}.war
+      - aws s3 cp target/helloworld.war s3://capstone-project-dhruwang-artifacts-rcmha9ft/helloworld.war
+      - echo Triggering deployment...
+
+artifacts:
+  files:
+    - target/helloworld.war
+  name: HelloWorldArtifact
+
+cache:
+  paths:
+    - "/root/.m2/**/*"
