@@ -1,4 +1,4 @@
-package main.java.com.capstone.servlet;
+package com.capstone.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
